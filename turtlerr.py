@@ -6,7 +6,7 @@ import configparser
 
 # Read config using configparser
 config = configparser.ConfigParser()
-config.read("config/plex_turtlerr.conf")
+config.read("config/turtlerr.conf")
 
 PLEX_URL = config.get("plex", "PLEX_URL")
 PLEX_TOKEN = config.get("plex", "PLEX_TOKEN")
