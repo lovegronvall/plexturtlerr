@@ -4,6 +4,7 @@ import time
 import requests
 import configparser
 
+# Read config using configparser
 config = configparser.ConfigParser()
 config.read("config/plex_turtlerr.conf")
 
@@ -76,6 +77,7 @@ def main():
                 with requests.Session() as session:
                    try:
                        qb_login(session)
+                       # Turtle mode should be enabled when we're streaming
                        qb_turtle(session, enable=currently_streaming)
                    except Exception as e:
                        print(f"qbittorrent speed toggle error: {e}")
@@ -83,7 +85,7 @@ def main():
                 was_streaming = currently_streaming
 
         except Exception as e:
-            print("Error checking sessions: {e}")
+            print(f"Error checking sessions: {e}")
 
         time.sleep(POLL_INTERVAL)
 
