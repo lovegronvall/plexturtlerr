@@ -1,3 +1,2 @@
-time
 requests
 configparser
