@@ -27,8 +27,7 @@ def qb_turtle(session, enable=True):
     if __debug__:
         print(f"qBittorrent check turtle output: {response.text}")
     turtle_enabled = bool(int(response.text))
-    if __debug__:
-        print(f"qBittorrent turtle state: {turtle_enabled}")
+    print(f"qBittorrent turtle enabled: {turtle_enabled}")
     if turtle_enabled != enable:
         print("Toggle turtle mode")
         response = session.post(toggle_url)
