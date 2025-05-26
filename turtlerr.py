@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 
+import os
 import time
 import requests
 import configparser
 
 # Read config using configparser
 config = configparser.ConfigParser()
-config.read("config/turtlerr.conf")
+if os.path.exists('/config/turtlerr.conf'):
+    config.read("/config/turtlerr.conf")
+elif os.path.exists('config/turtlerr.conf'):
+    config.read("config/turtlerr.conf")
+elif os.path.exists('turtlerr.conf'):
+    config.read("turtlerr.conf")
+
 
 PLEX_URL = config.get("plex", "PLEX_URL")
 PLEX_TOKEN = config.get("plex", "PLEX_TOKEN")
