@@ -1,8 +1,0 @@
-# Configuration
-PLEX_URL = "http://asdfasdf:32400"
-PLEX_TOKEN = ""
-POLL_INTERVAL = 5
-
-QBITTORRENT_URL = "http://asdfasdf:8080"
-QBITTORRENT_USERNAME = ""
-QBITTORRENT_PASSWORD = ""

@@ -1,6 +1,19 @@
+#!/usr/bin/env python3
+
 import time
 import requests
-from plex_turtlerr_cfg import *
+import configparser
+
+config = configparser.ConfigParser()
+config.read("config/plex_turtlerr.conf")
+
+PLEX_URL = config.get("plex", "PLEX_URL")
+PLEX_TOKEN = config.get("plex", "PLEX_TOKEN")
+POLL_INTERVAL = int(config.get("plex", "POLL_INTERVAL"))
+
+QBITTORRENT_URL = config.get("qbittorrent", "QBITTORRENT_URL")
+QBITTORRENT_USERNAME = config.get("qbittorrent", "QBITTORRENT_USERNAME")
+QBITTORRENT_PASSWORD = config.get("qbittorrent", "QBITTORRENT_PASSWORD")
 
 # Returns the number of current streams from the plex server
 def plex_sessions():
