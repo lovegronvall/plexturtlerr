@@ -17,6 +17,8 @@ else:
     print("No config file found!")
     exit()
 
+DEBUG = bool(config.get("settings", "DEBUG"))
+
 PLEX_URL = config.get("plex", "PLEX_URL")
 PLEX_TOKEN = config.get("plex", "PLEX_TOKEN")
 POLL_INTERVAL = int(config.get("plex", "POLL_INTERVAL"))
@@ -29,7 +31,7 @@ QBITTORRENT_PASSWORD = config.get("qbittorrent", "QBITTORRENT_PASSWORD")
 def plex_sessions():
     url = f"{PLEX_URL}/status/sessions"
     response = requests.get(url, headers={"Accept": "application/json", "X-Plex-Token": PLEX_TOKEN})
-    if __debug__:
+    if DEBUG:
         print(f"Plex response: {response}")
     response.raise_for_status()
     streamers = response.json().get('MediaContainer', {}).get('size', {})
@@ -47,14 +49,14 @@ def qb_turtle(session, enable=True):
     toggle_url = f'{QBITTORRENT_URL}/api/v2/transfer/toggleSpeedLimitsMode'
     check_url = f'{QBITTORRENT_URL}/api/v2/transfer/speedLimitsMode'
     response = session.get(check_url)
-    if __debug__:
+    if DEBUG:
         print(f"qBittorrent check turtle output: {response.text}")
     turtle_enabled = bool(int(response.text))
     print(f"qBittorrent turtle enabled: {turtle_enabled}")
     if turtle_enabled != enable:
         print("Toggle turtle mode")
         response = session.post(toggle_url)
-        if __debug__:
+        if DEBUG:
             print(f"qBittorrent toggle turtle output: {response.text}")
 
 
@@ -66,7 +68,7 @@ def main():
     while True:
         try:
             streamers = plex_sessions()
-            if __debug__:
+            if DEBUG:
                 print(f"Number of streamers: {streamers}")
 
             if streamers > 0:
@@ -74,7 +76,7 @@ def main():
             else:
                 currently_streaming = False
 
-            if __debug__:
+            if DEBUG:
                 print(f"Currently streaming: {currently_streaming}")
 
             # We only need to take action when we change streaming state
