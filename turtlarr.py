@@ -13,7 +13,9 @@ elif os.path.exists('config/turtlarr.conf'):
     config.read("config/turtlarr.conf")
 elif os.path.exists('turtlarr.conf'):
     config.read("turtlarr.conf")
-
+else:
+    print("No config file found!")
+    exit()
 
 PLEX_URL = config.get("plex", "PLEX_URL")
 PLEX_TOKEN = config.get("plex", "PLEX_TOKEN")
