@@ -4,5 +4,4 @@ COPY requirements.txt .
 COPY turtlarr.py .
 RUN mkdir -p /config
 RUN pip install --no-cache-dir -r requirements.txt
-CMD ["python", "turtlarr.py"]
-
+CMD ["python", "-O", "turtlarr.py"]
