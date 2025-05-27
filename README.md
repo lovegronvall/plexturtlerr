@@ -18,12 +18,15 @@ _/_/     |__|_|____/    \____|_/_|____        ·:::::·  .·
     |    :    .              .   .         |
     .                                      .
 ```
-turtlarr is a little software to set qBittorrent to turtle mode when ever someone watches a stream on your Plex server
+turtlarr is a software to keep qBittorrent in turtle mode when someone watches a stream on your Plex server
 
-I prefer to create a docker image, just clone the repo, enter the repo dir and run
+You can run the software directly:
+```python3 turtlarr.py```
+
+However, I prefer to create a docker image. Just clone the repo, enter the repo dir and run:
 ```docker build . -t turtlarr```
 
-Then you can use the image you just built in docker-compose:
+After you built the container image, you can use it in docker-compose:
 ```
 ---
 services:
