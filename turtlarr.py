@@ -57,7 +57,7 @@ def qb_turtle(session, enable=True):
 
 
 def main():
-    print("Starting Plex Turtlerr")
+    print("Starting turtlarr")
     currently_streaming = False
     was_streaming = False
 
