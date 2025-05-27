@@ -47,6 +47,7 @@ Just make your you have your config file available in one of the following locat
 config/turtlarr.conf
 turtlarr.conf
 ```
+Speaking of which, make sure you edit the config file to match your plex / qbittorrent configurations
 
 Afterwards
 Enjoy
