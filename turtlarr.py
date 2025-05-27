@@ -7,12 +7,12 @@ import configparser
 
 # Read config using configparser
 config = configparser.ConfigParser()
-if os.path.exists('/config/turtlerr.conf'):
-    config.read("/config/turtlerr.conf")
-elif os.path.exists('config/turtlerr.conf'):
-    config.read("config/turtlerr.conf")
-elif os.path.exists('turtlerr.conf'):
-    config.read("turtlerr.conf")
+if os.path.exists('/config/turtlarr.conf'):
+    config.read("/config/turtlarr.conf")
+elif os.path.exists('config/turtlarr.conf'):
+    config.read("config/turtlarr.conf")
+elif os.path.exists('turtlarr.conf'):
+    config.read("turtlarr.conf")
 
 
 PLEX_URL = config.get("plex", "PLEX_URL")
