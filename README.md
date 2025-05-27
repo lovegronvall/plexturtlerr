@@ -17,7 +17,6 @@ _/_/     |__|_|____/    \____|_/_|____        ·:::::·  .·
 \_\_|____|  : |              |   |   \_____|__/
     |    :    .              .   .         |
     .                                      .
-
 ```
 turtlarr is a little software to set qBittorrent to turtle mode when ever someone watches a stream on your Plex server
 
