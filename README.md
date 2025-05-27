@@ -49,6 +49,5 @@ turtlarr.conf
 ```
 Speaking of which, make sure you edit the config file to match your plex / qbittorrent configurations
 
-Afterwards
 Enjoy
 //Love
