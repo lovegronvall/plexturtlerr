@@ -7,17 +7,19 @@ import configparser
 
 # Read config using configparser
 config = configparser.ConfigParser()
-if os.path.exists('/config/turtlarr.conf'):
+if os.path.exists("/config/turtlarr.conf"):
     config.read("/config/turtlarr.conf")
-elif os.path.exists('config/turtlarr.conf'):
+elif os.path.exists("config/turtlarr.conf"):
     config.read("config/turtlarr.conf")
-elif os.path.exists('turtlarr.conf'):
+elif os.path.exists("turtlarr.conf"):
     config.read("turtlarr.conf")
 else:
     print("No config file found!")
     exit()
 
-DEBUG = bool(config.get("settings", "DEBUG"))
+DEBUG = config.get("settings", "DEBUG").lower() in ['true', 'yes', 'y', '1']
+if DEBUG:
+    print("DEBUG mode")
 
 PLEX_URL = config.get("plex", "PLEX_URL")
 PLEX_TOKEN = config.get("plex", "PLEX_TOKEN")
