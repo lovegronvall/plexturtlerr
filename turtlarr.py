@@ -4,6 +4,7 @@ import os
 import time
 import requests
 import configparser
+import logging
 
 # Read config using configparser
 config = configparser.ConfigParser()
@@ -14,12 +15,20 @@ elif os.path.exists("config/turtlarr.conf"):
 elif os.path.exists("turtlarr.conf"):
     config.read("turtlarr.conf")
 else:
-    print("No config file found!")
+    logging.error("No config file found!")
     exit()
 
 DEBUG = config.get("settings", "DEBUG").lower() in ['true', 'yes', 'y', '1']
 if DEBUG:
-    print("DEBUG mode")
+    loglevel = logging.DEBUG
+else:
+    loglevel = logging.INFO
+
+# Set logging config
+logging.basicConfig(
+    format = '%(asctime)s %(levelname)s: %(message)s',
+    level = loglevel
+)
 
 PLEX_URL = config.get("plex", "PLEX_URL")
 PLEX_TOKEN = config.get("plex", "PLEX_TOKEN")
@@ -33,8 +42,7 @@ QBITTORRENT_PASSWORD = config.get("qbittorrent", "QBITTORRENT_PASSWORD")
 def plex_sessions():
     url = f"{PLEX_URL}/status/sessions"
     response = requests.get(url, headers={"Accept": "application/json", "X-Plex-Token": PLEX_TOKEN})
-    if DEBUG:
-        print(f"Plex response: {response}")
+    logging.debug(f"Plex response: {response}")
     response.raise_for_status()
     streamers = response.json().get('MediaContainer', {}).get('size', {})
     return streamers
@@ -51,54 +59,50 @@ def qb_turtle(session, enable=True):
     toggle_url = f'{QBITTORRENT_URL}/api/v2/transfer/toggleSpeedLimitsMode'
     check_url = f'{QBITTORRENT_URL}/api/v2/transfer/speedLimitsMode'
     response = session.get(check_url)
-    if DEBUG:
-        print(f"qBittorrent check turtle output: {response.text}")
+    logging.debug(f"qBittorrent check turtle output: {response.text}")
     turtle_enabled = bool(int(response.text))
-    print(f"qBittorrent turtle enabled: {turtle_enabled}")
+    logging.info(f"qBittorrent turtle enabled: {turtle_enabled}")
     if turtle_enabled != enable:
-        print("Toggle turtle mode")
+        logging.info("Toggle turtle mode")
         response = session.post(toggle_url)
-        if DEBUG:
-            print(f"qBittorrent toggle turtle output: {response.text}")
+        logging.debug(f"qBittorrent toggle turtle output: {response.text}")
 
 
 def main():
-    print("Starting turtlarr")
+    logging.info("Starting turtlarr")
     currently_streaming = False
     was_streaming = False
 
     while True:
         try:
             streamers = plex_sessions()
-            if DEBUG:
-                print(f"Number of streamers: {streamers}")
+            logging.debug(f"Number of streamers: {streamers}")
 
             if streamers > 0:
                 currently_streaming = True
             else:
                 currently_streaming = False
 
-            if DEBUG:
-                print(f"Currently streaming: {currently_streaming}")
+            logging.debug(f"Currently streaming: {currently_streaming}")
 
             # We only need to take action when we change streaming state
             if currently_streaming != was_streaming:
                 if currently_streaming:
-                   print("Streaming started")
+                    logging.info("Streaming started")
                 else:
-                    print("Streaming stopped")
+                    logging.info("Streaming stopped")
                 with requests.Session() as session:
                    try:
                        qb_login(session)
                        # Turtle mode should be enabled when we're streaming
                        qb_turtle(session, enable=currently_streaming)
                    except Exception as e:
-                       print(f"qbittorrent speed toggle error: {e}")
+                       logging.error(f"qbittorrent speed toggle error: {e}")
                 # Remember if we are streaming or not
                 was_streaming = currently_streaming
 
         except Exception as e:
-            print(f"Error checking sessions: {e}")
+            logging.error(f"Error checking sessions: {e}")
 
         time.sleep(POLL_INTERVAL)
 
