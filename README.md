@@ -39,6 +39,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - ./turtlarr:/config
+      - /tmp:/hosttmp         # if you're using rebootarr
     restart: unless-stopped
 ```
 Just make your you have your config file available in one of the following locations:
