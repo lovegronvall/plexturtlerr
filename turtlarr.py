@@ -107,9 +107,11 @@ def main():
 
         except Exception as e:
             logging.error(f"Error checking sessions: {e}")
-            exceptions += 1
-            if POLL_RETRIES_REBOOT != 0 and exceptions >= POLL_RETRIES_REBOOT:
-                os.system("shutdown /r /t 1")
+            if POLL_RETRIES_REBOOT != 0:
+                exceptions += 1
+                logging.error(f"Number of exceptions in a row: {exceptions}, rebooting at POLL_RETRIES_REBOOT")
+                if exceptions >= POLL_RETRIES_REBOOT:
+                    os.system("shutdown /r /t 1")
 
         time.sleep(POLL_INTERVAL)
 
