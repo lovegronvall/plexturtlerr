@@ -34,6 +34,7 @@ logging.basicConfig(
 PLEX_URL = config.get("plex", "PLEX_URL")
 PLEX_TOKEN = config.get("plex", "PLEX_TOKEN")
 POLL_INTERVAL = int(config.get("plex", "POLL_INTERVAL"))
+POLL_RETRIES_REBOOT = int(config.get("plex", "POLL_RETRIES_REBOOT"))
 
 QBITTORRENT_URL = config.get("qbittorrent", "QBITTORRENT_URL")
 QBITTORRENT_USERNAME = config.get("qbittorrent", "QBITTORRENT_USERNAME")
@@ -73,6 +74,7 @@ def main():
     logging.info("Starting turtlarr")
     currently_streaming = False
     was_streaming = False
+    exceptions = 0
 
     while True:
         try:
@@ -101,9 +103,13 @@ def main():
                        logging.error(f"qbittorrent speed toggle error: {e}")
                 # Remember if we are streaming or not
                 was_streaming = currently_streaming
+            exceptions = 0
 
         except Exception as e:
             logging.error(f"Error checking sessions: {e}")
+            exceptions += 1
+            if POLL_RETRIES_REBOOT != 0 and exceptions >= POLL_RETRIES_REBOOT:
+                os.system("shutdown /r /t 1")
 
         time.sleep(POLL_INTERVAL)
 
