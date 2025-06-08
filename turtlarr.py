@@ -36,7 +36,7 @@ PLEX_TOKEN = config.get("plex", "PLEX_TOKEN")
 POLL_INTERVAL = int(config.get("plex", "POLL_INTERVAL"))
 
 POLL_RETRIES_RESTART = int(config.get("system", "POLL_RETRIES_RESTART"))
-RESTART_COMMAND = int(config.get("system", "RESTART_COMMAND"))
+RESTART_COMMAND = config.get("system", "RESTART_COMMAND")
 
 QBITTORRENT_URL = config.get("qbittorrent", "QBITTORRENT_URL")
 QBITTORRENT_USERNAME = config.get("qbittorrent", "QBITTORRENT_USERNAME")
