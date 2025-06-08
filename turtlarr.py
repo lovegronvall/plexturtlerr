@@ -113,6 +113,7 @@ def main():
                 exceptions += 1
                 logging.error(f"Number of exceptions in a row: {exceptions}, restarting server at {POLL_RETRIES_RESTART}")
                 if exceptions >= POLL_RETRIES_RESTART:
+                    logging.info("Sending reboot signal")
                     os.system(RESTART_COMMAND)
 
         time.sleep(POLL_INTERVAL)
