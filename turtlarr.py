@@ -34,7 +34,9 @@ logging.basicConfig(
 PLEX_URL = config.get("plex", "PLEX_URL")
 PLEX_TOKEN = config.get("plex", "PLEX_TOKEN")
 POLL_INTERVAL = int(config.get("plex", "POLL_INTERVAL"))
-POLL_RETRIES_REBOOT = int(config.get("plex", "POLL_RETRIES_REBOOT"))
+
+POLL_RETRIES_RESTART = int(config.get("system", "POLL_RETRIES_RESTART"))
+RESTART_COMMAND = int(config.get("system", "RESTART_COMMAND"))
 
 QBITTORRENT_URL = config.get("qbittorrent", "QBITTORRENT_URL")
 QBITTORRENT_USERNAME = config.get("qbittorrent", "QBITTORRENT_USERNAME")
@@ -107,11 +109,11 @@ def main():
 
         except Exception as e:
             logging.error(f"Error checking sessions: {e}")
-            if POLL_RETRIES_REBOOT != 0:
+            if POLL_RETRIES_RESTART != 0:
                 exceptions += 1
-                logging.error(f"Number of exceptions in a row: {exceptions}, rebooting at POLL_RETRIES_REBOOT")
-                if exceptions >= POLL_RETRIES_REBOOT:
-                    os.system("shutdown /r /t 1")
+                logging.error(f"Number of exceptions in a row: {exceptions}, restarting server at {POLL_RETRIES_RESTART}")
+                if exceptions >= POLL_RETRIES_RESTART:
+                    os.system(RESTART_COMMAND)
 
         time.sleep(POLL_INTERVAL)
 
